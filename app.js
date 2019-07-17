@@ -14,6 +14,10 @@ sequelize
 
 // Setup Pug as View engine
 app.set('view engine', 'pug');
+//Express Body Parser
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
 // Set static route
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -22,6 +26,18 @@ app.get('/', (req, res) => {
 });
 
 app.use('/books', require('./routes/books'));
+
+// Error handling
+app.use((req, res, next) => {
+  const err = new Error('Not Found');
+  err.status = 404;
+  next(err);
+});
+
+app.use((err, req, res, next) => {
+  console.log(`Sorry ${err.status} ${err.message}. Try Again.`);
+  res.render('page-not-found', { err });
+});
 
 // Set PORT to env port or localhost 5000
 const PORT = process.env.PORT || 5000;
