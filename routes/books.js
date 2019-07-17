@@ -6,7 +6,6 @@ const Book = require('../models').Book;
 router.get('/', (req, res) => {
   Book.findAll()
     .then(books => {
-      console.log(books);
       res.render('index', { books });
     })
     .catch(err => console.log(err));
@@ -16,23 +15,31 @@ router.get('/', (req, res) => {
 router.get('/new', (req, res) => {
   res.render('new-book');
 });
-
+// Post a New Book
 router.post('/new', (req, res) => {
   const { title, author, genre, year } = req.body;
-  res.send(
-    `Title: ${title}, Author: ${author}, Genre: ${genre}, Year: ${year}`
-  );
+  Book.create({ title, author, genre, year })
+    .then(book => res.redirect('/books'))
+    .catch(err => console.log(err));
 });
-
+// Get Book information
 router.get('/:id', (req, res) => {
-  if (req.params.id !== undefined) {
-    res.send(`The id of the book selected is ${req.params.id}`);
-  } else {
-    const err = new Error('Sorry but the Book id is not found');
-    err.status = 400;
-
-    res.render('error', { err });
-  }
+  Book.findOne({
+    where: { id: req.params.id }
+  })
+    .then(book => {
+      console.log(book.title, book.author, book.genre, book.year);
+      res.render('update-book', { book });
+    })
+    .catch(err => {
+      // const err = new Error('Sorry but the Book id is not found');
+      err.status = 400;
+      console.log(err);
+      res.render('error', { err });
+    });
 });
+// Update Book information
+
+//Delete Book
 
 module.exports = router;
