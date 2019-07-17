@@ -32,9 +32,10 @@ router.get('/:id', (req, res) => {
       res.render('update-book', { book });
     })
     .catch(err => {
-      // const err = new Error('Sorry but the Book id is not found');
       err.status = 400;
-      console.log(err);
+      console.log(
+        `Sorry the book ID: ${req.params.id} you are looking for does not exist`
+      );
       res.render('error', { err });
     });
 });
