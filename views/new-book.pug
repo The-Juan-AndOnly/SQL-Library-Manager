@@ -6,18 +6,24 @@ block title
 block content
   h1 New Book
   form(action="/books/new", method="POST")
+    if errors
+      h2.error Ooooops!
+      ul.error
+        each error in errors
+          li #{error.text}
+
     p
       label(for='title') Title
-      input#title(name='title', type='text')
+      input#title(name='title', type='text', value=title)
     p
       label(for='author') Author
-      input#author(name='author', type='text')
+      input#author(name='author', type='text',value=author)
     p
       label(for='genre') Genre
-      input#genre(name='genre', type='text')
+      input#genre(name='genre', type='text', value=genre)
     p
       label(for='year') Year
-      input#year(name='year', type='text')
+      input#year(name='year', type='text', value=year)
     p
       input(type='submit', value='Create New Book')
     p

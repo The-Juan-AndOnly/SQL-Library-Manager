@@ -14,6 +14,7 @@ sequelize
 
 // Setup Pug as View engine
 app.set('view engine', 'pug');
+
 //Express Body Parser
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
