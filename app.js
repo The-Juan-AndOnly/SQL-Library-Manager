@@ -15,17 +15,19 @@ sequelize
 // Setup Pug as View engine
 app.set('view engine', 'pug');
 
-//Express Body Parser
+//Express built in Body Parser
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 // Set static route
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Redirect from '/' to '/books'
 app.get('/', (req, res) => {
   res.redirect('/books');
 });
 
+// Use the books route
 app.use('/books', require('./routes/books'));
 
 // Error handling

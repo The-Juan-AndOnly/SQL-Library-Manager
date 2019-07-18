@@ -10,20 +10,20 @@ block content
       h2.error Ooooops!
       ul.error
         each error in errors
-          li #{error.text}
+          li= error.message
 
     p
       label(for='title') Title
-      input#title(name='title', type='text', value=title)
+      input#title(name='title', type='text', value=book.title)
     p
       label(for='author') Author
-      input#author(name='author', type='text',value=author)
+      input#author(name='author', type='text',value=book.author)
     p
       label(for='genre') Genre
-      input#genre(name='genre', type='text', value=genre)
+      input#genre(name='genre', type='text', value=book.genre)
     p
       label(for='year') Year
-      input#year(name='year', type='text', value=year)
+      input#year(name='year', type='text', value=book.year)
     p
       input(type='submit', value='Create New Book')
     p

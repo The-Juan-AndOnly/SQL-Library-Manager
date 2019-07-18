@@ -11,76 +11,91 @@ router.get('/', (req, res) => {
     .catch(err => console.log(err));
 });
 
-// Add a book
+// Get New Book Form
 router.get('/new', (req, res) => {
-  res.render('new-book');
+  res.render('new-book', { book: Book.build() });
 });
-// Post a New Book
+
+// Post a New Book to the DB
 router.post('/new', (req, res) => {
   const { title, author, genre, year } = req.body;
-  let errors = [];
-  // Validate Fields
-  if (!title) {
-    errors.push({ text: 'Title is required' });
-  }
-  if (!author) {
-    errors.push({ text: 'Author is required' });
-  }
 
-  // Check for errors
-  if (errors.length > 0) {
-    res.render('new-book', { errors, title, author, genre, year });
-  } else {
-    Book.create({ title, author, genre, year })
-      .then(book => res.redirect('/books'))
-      .catch(err => console.log(err));
-  }
+  Book.create({ title, author, genre, year })
+    .then(book => res.redirect('/books'))
+    .catch(err => {
+      if (err.name === 'SequelizeValidationError') {
+        res.render('new-book', {
+          errors: err.errors,
+          book: Book.build(req.body)
+        });
+      } else {
+        throw err;
+      }
+    })
+    .catch(err => {
+      err.status = 500;
+      res.render('page-not-found', { err });
+    });
+  // }
 });
-// Get Book information
+
+// Get A single Book information
 router.get('/:id', (req, res) => {
   Book.findOne({
     where: { id: req.params.id }
   })
     .then(book => {
-      res.render('update-book', { book });
+      if (book) {
+        res.render('update-book', { book });
+      } else {
+        res.render('error');
+      }
     })
     .catch(err => {
-      err.status = 400;
-      console.log(
-        `Sorry the book ID: ${req.params.id} you are looking for does not exist`
-      );
-      res.render('error', { err });
+      res.send(500);
     });
 });
-// Update Book information
-router.post('/:id', (req, res) => {
-  const { title, author, genre, year } = req.body;
-  let errors = [];
-  // Validate Fields
-  if (!title) {
-    errors.push({ text: 'Title is required' });
-  }
-  if (!author) {
-    errors.push({ text: 'Author is required' });
-  }
-  console.log(errors);
-  // Check for errors
 
+// Update A Single Book information
+router.post('/:id', (req, res) => {
   Book.findOne({ where: { id: req.params.id } })
     .then(book => {
-      if (errors.length > 0) {
-        res.render('update-book', { errors, book, title, author, genre, year });
-      } else {
+      if (book) {
         book.update(req.body);
+      } else {
+        res.render('error');
       }
     })
     .then(() => res.redirect('/books'))
-    .catch(err => console.log('Eror Updating Book'));
+    .catch(err => {
+      if (err.name === 'SequelizeValidationError') {
+        let book = Book.build(req.body);
+        book.id = req.params.id;
+        res.render('update-book', {
+          errors: err.errors,
+          book
+        });
+        console.log(book);
+      } else {
+        throw err;
+      }
+    })
+    .catch(err => {
+      err.status = 500;
+      res.render('page-not-found', { err });
+    });
 });
-//Delete Book
+
+//Delete A Book from the DB
 router.post('/:id/delete', (req, res) => {
   Book.findOne({ where: { id: req.params.id } })
-    .then(book => book.destroy())
+    .then(book => {
+      if (book) {
+        book.destroy();
+      } else {
+        res.render('error');
+      }
+    })
     .then(() => res.redirect('/books'));
 });
 
