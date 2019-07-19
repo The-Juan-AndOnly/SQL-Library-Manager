@@ -14,11 +14,11 @@ An CRUD application using a SQLite database to manage books in a fictional libra
 
 ### Built With
 
-- • [NodeJS](https://nodejs.org/en/)
-- • [Express](https://expressjs.com/)
-- • [PugJS](https://pugjs.org/api/getting-started.html)
-- • [SQLite](https://www.sqlite.org/index.html)
-- • [Sequelize ORM](https://sequelize.readthedocs.io/en/v3/)
+- [NodeJS](https://nodejs.org/en/)
+- [Express](https://expressjs.com/)
+- [PugJS](https://pugjs.org/api/getting-started.html)
+- [SQLite](https://www.sqlite.org/index.html)
+- [Sequelize ORM](https://sequelize.readthedocs.io/en/v3/)
 
 ### Acknowledgments
 
