@@ -1,10 +1,10 @@
 extends layout
 
 block title
-  title Page Not Found
+  title= err.message
 
 block content
-  h1 Server Error
+  h1 #{err.status} #{err.message}
   p Sorry! There was an unexpected error on the server.
   br
   p

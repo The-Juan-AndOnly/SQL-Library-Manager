@@ -4,7 +4,7 @@ const Book = require('../models').Book;
 
 // Get Book List
 router.get('/', (req, res) => {
-  Book.findAll({ order: [['title', 'ASC']] })
+  Book.findAll()
     .then(books => {
       res.render('index', { books });
     })
@@ -17,7 +17,7 @@ router.get('/new', (req, res) => {
 });
 
 // Post a New Book to the DB
-router.post('/new', (req, res) => {
+router.post('/new', (req, res, next) => {
   const { title, author, genre, year } = req.body;
 
   Book.create({ title, author, genre, year })
@@ -34,55 +34,49 @@ router.post('/new', (req, res) => {
     })
     .catch(err => {
       err.status = 500;
-      res.render('page-not-found', { err });
+      next(err);
     });
   // }
 });
 
 // Get A single Book information
-router.get('/:id', (req, res) => {
-  Book.findOne({
-    where: { id: req.params.id }
-  })
+router.get('/:id', (req, res, next) => {
+  Book.findByPk(req.params.id)
     .then(book => {
       if (book) {
         res.render('update-book', { book });
       } else {
-        res.render('error');
+        const error = new Error('Book Not Found');
+        error.status = 400;
+        res.render('error', { error });
       }
     })
     .catch(err => {
       res.send(500);
+      next(err);
     });
 });
 
 // Update A Single Book information
-router.post('/:id', (req, res) => {
-  Book.findOne({ where: { id: req.params.id } })
-    .then(book => {
-      if (book) {
-        book.update(req.body);
-      } else {
-        res.render('error');
-      }
-    })
+router.post('/:id', (req, res, next) => {
+  Book.findByPk(req.params.id)
+    .then(book => book.update(req.body))
     .then(() => res.redirect('/books'))
     .catch(err => {
       if (err.name === 'SequelizeValidationError') {
         let book = Book.build(req.body);
         book.id = req.params.id;
         res.render('update-book', {
-          errors: err.errors,
-          book
+          book,
+          errors: err.errors
         });
-        console.log(book);
       } else {
         throw err;
       }
     })
     .catch(err => {
       err.status = 500;
-      res.render('page-not-found', { err });
+      next(err);
     });
 });
 
