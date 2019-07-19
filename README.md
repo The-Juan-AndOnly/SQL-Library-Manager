@@ -4,9 +4,9 @@ An CRUD application using a SQLite database to manage books in a fictional libra
 
 ### Installing
 
-1. Download or clone repo to ou local machine
+1. Download or clone repo to your local machine.
 
-2. Run `npm install` to install all dependencies
+2. Run `npm install` to install all dependencies.
 
 3. Run `npm start` to serve the app.
 
