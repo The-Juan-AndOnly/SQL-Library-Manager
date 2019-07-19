@@ -2,7 +2,7 @@
 
 An CRUD application using a SQLite database to manage books in a fictional library.
 
-## Installing
+### Installing
 
 1. Download or clone repo to ou local machine
 
@@ -12,14 +12,14 @@ An CRUD application using a SQLite database to manage books in a fictional libra
 
 4. Go to `localhost:5000` to view the application.
 
-## Built With
+### Built With
 
-• [NodeJS](https://nodejs.org/en/)
-• [Express](https://expressjs.com/)
-• [PugJS](https://pugjs.org/api/getting-started.html)
-• [SQLite](https://www.sqlite.org/index.html)
-• [Sequelize ORM](https://sequelize.readthedocs.io/en/v3/)
+- • [NodeJS](https://nodejs.org/en/)
+- • [Express](https://expressjs.com/)
+- • [PugJS](https://pugjs.org/api/getting-started.html)
+- • [SQLite](https://www.sqlite.org/index.html)
+- • [Sequelize ORM](https://sequelize.readthedocs.io/en/v3/)
 
-## Acknowledgments
+### Acknowledgments
 
 • [Brad Traversy](https://www.youtube.com/watch?v=bOHysWYMZM0)
