@@ -1,7 +1,7 @@
 # SQL Library Manager
-
+```
 An CRUD application using a SQLite database to manage books in a fictional library.
-
+```
 ### Installing
 
 1. Download or clone repo to your local machine.
